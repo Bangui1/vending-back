@@ -1,12 +1,12 @@
 import {MongoClient} from "mongodb";
 
 
-var mongoUri = 'mongodb://' + process.env.MONGODB_HOST + ':' + process.env.MONGODB_PORT;
+var mongoUri = 'mongodb://54.166.202.46:27017';
 // Create a new client and connect to MongoDB
 const dbclient = new MongoClient(mongoUri);
 
-const database = dbclient.db(process.env.MONGODB_DB);
-const mongoClient = database.collection(process.env.MONGODB_COLLECTION);
+const database = dbclient.db('test');
+const mongoClient = database.collection('message');
 
 
 export default mongoClient;

@@ -21,20 +21,19 @@ client.on('connect', () => {
 client.subscribe("vending/+")
 client.on('message', (topic, message) => {
     const topicId = topic.split('/')[1]
+    console.log(topicId)
 
     const doc = {
         topic: topicId,
         message: message.toString(),
         date: new Date()
     }
-    mongoClient.insertOne(doc, (err, res) => {
-        if (!err) {
-            const ackTopic = `vending/ack/${topicId}`
-            client.publish(ackTopic, "OK")
-        }
-        if (err) throw err;
-        console.log("1 document inserted");
-    });
+    mongoClient.insertOne(doc).then((result) => {
+        const ackTopic = `vending/ack/${topicId}`
+        client.publish(ackTopic, "OK")
+    }).catch((error) => {
+        console.log(error)
+    })
 })
 
 client.on('error', (error) => {

@@ -3,15 +3,16 @@ import mqtt from 'mqtt';
 import fs from "fs";
 import mongoClient from "./src/mongoClient.js";
 import express from "express";
+import {Constants} from "./src/constants.js";
 
 
 const app = express();
 const port = 8080;
-
+app.use(express.json())
 
 const mqttOptions = {
-    host: 'ec2-52-70-127-255.compute-1.amazonaws.com',
-    port: 8883,
+    host: Constants.MQTT_HOST,
+    port: Constants.MQTT_PORT,
     protocol: 'mqtts',
     ca: [fs.readFileSync('src/ca-root-cert.crt')],
     rejectUnauthorized: true,
@@ -32,6 +33,25 @@ app.get('/vending', async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({error: error});
+    }
+})
+
+app.post('/vending', async (req, res) => {
+    try {
+        const doc = {
+            topic: req.body.topic,
+            message: req.body.message,
+            date: new Date()
+        }
+        mongoClient.insertOne(doc).then((result) => {
+            res.json("OK")
+        }).catch((error) => {
+            console.log(error)
+            res.status(500).json({error: error})
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: error})
     }
 })
 

@@ -36,24 +36,7 @@ app.get('/vending', async (req, res) => {
     }
 })
 
-app.post('/vending', async (req, res) => {
-    try {
-        const doc = {
-            topic: req.body.topic,
-            message: req.body.message,
-            date: new Date()
-        }
-        mongoClient.insertOne(doc).then((result) => {
-            res.json("OK")
-        }).catch((error) => {
-            console.log(error)
-            res.status(500).json({error: error})
-        })
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({error: error})
-    }
-})
+
 
 client.on('connect', () => {
     console.log('Connected to MQTT Broker');

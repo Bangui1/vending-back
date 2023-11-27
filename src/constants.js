@@ -11,4 +11,5 @@ export class Constants {
     static MONGODB_COLLECTION = process.env.MONGODB_COLLECTION || 'data';
     static MQTT_HOST = process.env.MQTT_HOST || 'secretIp';
     static MQTT_PORT = process.env.MQTT_PORT || '1883';
+    static MONGODB_URI = process.env.MONGODB_URI || 'mongodb://secretIp:27017/';
 }
